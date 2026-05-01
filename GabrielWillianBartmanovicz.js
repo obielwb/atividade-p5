@@ -30,9 +30,9 @@ function draw() {
 function drawFullPainting() {
   let H = 180;
   drawQuadrant(20, 20, H, 0);
-  // drawQuadrant(H, 20, H, 1);
-  // drawQuadrant(20, H, H, 2);
-  // drawQuadrant(H, H, H, 3);
+  drawQuadrant(200, 20, H, 1);
+  drawQuadrant(20, 200, H, 2);
+  drawQuadrant(200, 200, H, 3);
 }
 
 function drawQuadrant(qx, qy, qSize, quadrant) {
@@ -58,28 +58,40 @@ function drawQuadrant(qx, qy, qSize, quadrant) {
     let x = qx + inset;
     let y = qy + inset;
 
-    // Color indices per quadrant, shifted +1 per ring inward.
-    // TL: L=B(2), T=O(1), R=R(0), B=G(3)
-    // TR: L=O(1), T=G(3), R=B(2), B=R(0)   (horiz mirror)
-    // BL: L=G(3), T=R(0), R=O(1), B=B(2)   (vert mirror)
-    // BR: L=R(0), T=B(2), R=G(3), B=O(1)   (both axes)
-    let lc, tc, rc, bc;
 
-    if (quadrant === 0) {
-      // TL: spiral clockwise inward from top-left
-      lc = PALETTE[(2 + ring) % 4];
+    let lc = PALETTE[(2 + ring) % 4]; // Azul
+    let tc = PALETTE[(1 + ring) % 4]; // Laranja
+    let rc = PALETTE[(0 + ring) % 4]; // Vermelho
+    let bc = PALETTE[(3 + ring) % 4]; // Verde
+    if (quadrant == 1) {
+      lc = PALETTE[(1 + ring) % 4]; // Laranja
+      tc = PALETTE[(3 + ring) % 4]; // Verde
+      rc = PALETTE[(0 + ring) % 4]; // Vermelho
+      bc = PALETTE[(2 + ring) % 4]; // Azul
+    } else if (quadrant == 2) {
+      lc = PALETTE[(3 + ring) % 4];
       tc = PALETTE[(1 + ring) % 4];
-      rc = PALETTE[(0 + ring) % 4];
-      bc = PALETTE[(3 + ring) % 4];
+      rc = PALETTE[(2 + ring) % 4];
+      bc = PALETTE[(0 + ring) % 4];
+    } else if (quadrant == 3) {
+      lc = PALETTE[(3 + ring) % 4]; // Verde
+      tc = PALETTE[(0 + ring) % 4]; // Vermelho
+      rc = PALETTE[(1 + ring) % 4]; // Laranja
+      bc = PALETTE[(2 + ring) % 4]; // Azul
     }
 
     // Draw order creates spiral corner overlap per quadrant
-    if (quadrant === 0) {
+    if (ring === 0) {
       // TL: left strip on top → spiral from top-left corner
       fill(bc); rect(x + sw, y + s - sw, s - sw, sw);
       fill(rc); rect(x + s - sw, y, sw, s - sw);
       fill(tc); rect(x, y, s - sw, sw);
       fill(lc); rect(x, y + sw, sw, s - sw);
+    } else {
+      fill(bc); rect(x, y + s - sw, s - sw, sw);
+      fill(rc); rect(x + s - sw, y + sw, sw, s - sw);
+      fill(tc); rect(x + sw, y, s - sw, sw);
+      fill(lc); rect(x, y, sw, s - sw);
     }
   }
 
