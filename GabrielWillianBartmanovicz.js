@@ -59,26 +59,27 @@ function drawQuadrant(qx, qy, qSize, quadrant) {
     let y = qy + inset;
 
 
-    let lc = PALETTE[(2 + ring) % 4]; // Azul
-    let tc = PALETTE[(1 + ring) % 4]; // Laranja
-    let rc = PALETTE[(0 + ring) % 4]; // Vermelho
-    let bc = PALETTE[(3 + ring) % 4]; // Verde
-    if (quadrant == 1) {
-      lc = PALETTE[(1 + ring) % 4]; // Laranja
-      tc = PALETTE[(3 + ring) % 4]; // Verde
-      rc = PALETTE[(0 + ring) % 4]; // Vermelho
-      bc = PALETTE[(2 + ring) % 4]; // Azul
-    } else if (quadrant == 2) {
-      lc = PALETTE[(3 + ring) % 4];
-      tc = PALETTE[(1 + ring) % 4];
-      rc = PALETTE[(2 + ring) % 4];
-      bc = PALETTE[(0 + ring) % 4];
-    } else if (quadrant == 3) {
-      lc = PALETTE[(3 + ring) % 4]; // Verde
-      tc = PALETTE[(0 + ring) % 4]; // Vermelho
-      rc = PALETTE[(1 + ring) % 4]; // Laranja
-      bc = PALETTE[(2 + ring) % 4]; // Azul
-    }
+    // Base colors for each quadrant: [Top, Right, Bottom, Left]
+    const baseColors = [
+      [1, 0, 3, 2], // Quadrant 0
+      [3, 0, 2, 1], // Quadrant 1
+      [1, 2, 0, 3], // Quadrant 2
+      [0, 1, 2, 3]  // Quadrant 3
+    ];
+    
+    let qBase = baseColors[quadrant];
+    
+    // Shift colors cyclically based on the ring depth
+    // T gets previous L, R gets previous T, etc.
+    let tc_idx = qBase[(0 - (ring % 4) + 4) % 4];
+    let rc_idx = qBase[(1 - (ring % 4) + 4) % 4];
+    let bc_idx = qBase[(2 - (ring % 4) + 4) % 4];
+    let lc_idx = qBase[(3 - (ring % 4) + 4) % 4];
+
+    let tc = PALETTE[tc_idx];
+    let rc = PALETTE[rc_idx];
+    let bc = PALETTE[bc_idx];
+    let lc = PALETTE[lc_idx];
 
     // Draw order creates spiral corner overlap per quadrant
     if (ring === 0) {
