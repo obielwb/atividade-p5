@@ -6,6 +6,8 @@
 **Imagem da pintura:**
 [Link para a pintura no Artsy](https://www.artsy.net/artwork/max-bill-concentric-squares)
 
+![Concentric Squares. Max Bill, 1969](image.png)
+
 **Arquivos:**
 - `index.html`
 - `GabrielWillianBartmanovicz.js`
